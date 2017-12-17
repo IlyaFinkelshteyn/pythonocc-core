@@ -459,6 +459,31 @@ std::string formatFloatNumber(float f)
   return formatted_float.str();
 }
 
+std::vector<float> Tesselator::GetVerticesPositionAsTuple()
+{
+  std::vector<float> vertices_position;
+  vertices_position.reserve(tot_triangle_count);
+  int *vertices_idx = new int[3];
+  int *texcoords_idx = new int[3];
+  int *normals_idx = new int[3];
+  // traverse triangles and write vertices and normals strings
+  for (int i=0;i<tot_triangle_count;i++) {
+      ObjGetTriangle(i, vertices_idx, texcoords_idx, normals_idx);
+      vertices_position.push_back(locVertexcoord[vertices_idx[0]]);
+      vertices_position.push_back(locVertexcoord[vertices_idx[0]+1]);
+      vertices_position.push_back(locVertexcoord[vertices_idx[0]+2]);
+      // Second vertex
+      vertices_position.push_back(locVertexcoord[vertices_idx[1]]);
+      vertices_position.push_back(locVertexcoord[vertices_idx[1]+1]);
+      vertices_position.push_back(locVertexcoord[vertices_idx[1]+2]);
+      // Third vertex
+      vertices_position.push_back(locVertexcoord[vertices_idx[2]]);
+      vertices_position.push_back(locVertexcoord[vertices_idx[2]+1]);
+      vertices_position.push_back(locVertexcoord[vertices_idx[2]+2]);
+    }
+  return vertices_position;
+}
+
 std::string Tesselator::ExportShapeToX3DIndexedFaceSet()
 {
   std::stringstream str_ifs, str_vertices, str_normals;
